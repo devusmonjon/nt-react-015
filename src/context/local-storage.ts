@@ -1,5 +1,3 @@
-import { IProduct } from "@/interfaces";
-
 export const getFromStorage = (getter: "wishlist" | "cart" | "token") => {
   let res = "[]";
   try {
@@ -11,7 +9,7 @@ export const getFromStorage = (getter: "wishlist" | "cart" | "token") => {
 };
 export const saveToStorage = (
   setter: "wishlist" | "cart" | "token",
-  data: IProduct[] | string
+  data: string
 ) => {
   try {
     localStorage.setItem(

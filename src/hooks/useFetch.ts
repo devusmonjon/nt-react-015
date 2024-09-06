@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import axios from "@/api";
+import { useDispatch } from "react-redux";
 
 interface iUseFetch {
   data: { payload?: [] };
@@ -13,6 +14,7 @@ export const useFetch = (
   params: {},
   deps: number[] | string[] = []
 ): iUseFetch => {
+  const dispatch = useDispatch();
   const [data, setData] = useState({});
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -22,7 +24,12 @@ export const useFetch = (
     axios
       .get(path, { params })
       .then((res) => setData(res.data))
-      .catch((err) => setError(err))
+      .catch((err) => {
+        if (err.status === 401) {
+          setError(err);
+          dispatch({ type: "LOGOUT" });
+        }
+      })
       .finally(() => setLoading(false));
   }, [path, ...deps]);
 

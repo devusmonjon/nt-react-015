@@ -8,21 +8,31 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "@/api";
 import { toast } from "sonner";
+import { Loader2 } from "lucide-react";
 
 const Blogs = ({
-  data,
+  data: blogs,
   setupdateCount,
 }: {
   data: IBlog[];
   setupdateCount: (prev: number) => void;
 }) => {
+  const [data, setData] = useState<IBlog[]>([]);
+  const [loading, setLoading] = useState(false);
   const form = useRef(null);
-  console.log(data);
+  useEffect(() => {
+    setData(blogs);
+    setTimeout(() => {
+      window.scrollTo({
+        top: document.body.scrollHeight,
+      });
+    }, 100);
+  }, [blogs]);
   return (
-    <section className="py-10">
+    <section className="pt-10 pb-4">
       <div className="container">
         <div className="flex justify-between items-center pb-4">
           <h2 className="font-bold text-2xl">Blogs</h2>
@@ -43,6 +53,7 @@ const Blogs = ({
                   ref={form}
                   onSubmit={(e) => {
                     e.preventDefault();
+                    setLoading(true);
                     const formData = form.current
                       ? new FormData(form.current)
                       : false;
@@ -59,6 +70,7 @@ const Blogs = ({
                         toast.success(res.data.msg, {
                           position: "top-center",
                         });
+                        setData([]);
                         // @ts-ignore
                         setupdateCount((prev) => prev + 1);
                       })
@@ -66,7 +78,8 @@ const Blogs = ({
                         toast.error(err.response.data.msg, {
                           position: "top-center",
                         });
-                      });
+                      })
+                      .finally(() => setLoading(false));
                   }}
                 >
                   <div className="grid grid-cols-3 items-center gap-4">
@@ -88,16 +101,36 @@ const Blogs = ({
                     />
                   </div>
                   <div className="grid grid-cols-1 items-center gap-4">
-                    <Button variant="outline">Create post</Button>
+                    <Button
+                      type="submit"
+                      variant={"outline"}
+                      className="w-full"
+                      disabled={loading}
+                    >
+                      {loading ? (
+                        <>
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          Please wait
+                        </>
+                      ) : (
+                        "Create post"
+                      )}
+                    </Button>
                   </div>
                 </form>
               </div>
             </PopoverContent>
           </Popover>
         </div>
-        <div className="grid grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {data?.map((blog) => (
-            <Blog data={blog} key={blog._id} />
+            <Blog
+              data={blog}
+              key={blog._id}
+              setData={setData}
+              // @ts-ignore
+              setUpdateCount={setupdateCount}
+            />
           ))}
         </div>
       </div>

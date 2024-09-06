@@ -7,6 +7,8 @@ import { cn } from "@/lib/utils";
 import Navbar from "@/components/shared/navbar";
 import { Toaster } from "sonner";
 import { ContextProvider } from "@/components/context-provider";
+import ProgressBar from "@/components/shared/progress-bar";
+import { useEffect } from "react";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -31,6 +33,7 @@ export default function RootLayout({
           fontSans.variable
         )}
       >
+        <ProgressBar />
         <ContextProvider>
           <ThemeProvider
             attribute="class"

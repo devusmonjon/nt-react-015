@@ -31,12 +31,14 @@ import axios from "@/api";
 import { toast } from "sonner";
 const Blog = ({
   data,
-  setData,
-  setUpdateCount,
+  updateBlogs,
 }: {
   data: IBlog;
-  setData: (params: IBlog[]) => void;
-  setUpdateCount: (param: (prev: number) => number) => void;
+  updateBlogs: (
+    type: "UPDATE" | "DELETE" | "CREATE",
+    values?: { title: string; desc: string },
+    id?: string
+  ) => void;
 }) => {
   const form = useRef<HTMLFormElement>(null);
   const [loading, setLoading] = useState(false);
@@ -82,9 +84,11 @@ const Blog = ({
                         toast.success("Successfully updated", {
                           position: "top-center",
                         });
-                        setData([]);
-                        // @ts-ignore
-                        setUpdateCount((prev) => prev + 1);
+                        updateBlogs(
+                          "UPDATE",
+                          res.data.payload as IBlog,
+                          data._id
+                        );
                       })
                       .catch((err) => {
                         toast.error("You have not access to delete this post", {
@@ -174,6 +178,7 @@ const Blog = ({
                             position: "top-center",
                             id: loadingT,
                           });
+                          updateBlogs("DELETE", {} as IBlog, data._id);
                         })
                         .catch((err) => {
                           toast.warning(err.response.data.msg, {

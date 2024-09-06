@@ -12,20 +12,36 @@ import { useEffect, useRef, useState } from "react";
 import axios from "@/api";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
+import { useSelector } from "react-redux";
 
-const Blogs = ({
-  data: blogs,
-  setupdateCount,
-}: {
-  data: IBlog[];
-  setupdateCount: (prev: number) => void;
-}) => {
+const Blogs = ({ data: blogs, limit }: { data: IBlog[]; limit: number }) => {
   const [data, setData] = useState<IBlog[]>([]);
   const [loading, setLoading] = useState(false);
+  const auth = useSelector((state: { auth: { token: string } }) => state.auth);
   const form = useRef(null);
   useEffect(() => {
     setData(blogs);
   }, [blogs]);
+  const updateBlogs = (
+    type: "UPDATE" | "DELETE" | "CREATE",
+    values?: { title: string; desc: string },
+    id?: string
+  ) => {
+    switch (type) {
+      case "CREATE":
+        // @ts-ignore
+        setData([values as IBlog, ...data]);
+        break;
+      case "DELETE":
+        setData(data.filter((blog) => blog._id !== id));
+        break;
+      case "UPDATE":
+        setData(data.map((blog) => (blog._id === id ? values : blog) as IBlog));
+        break;
+      default:
+        break;
+    }
+  };
   return (
     <section className="pt-10 pb-4">
       <div className="container">
@@ -65,9 +81,7 @@ const Blogs = ({
                         toast.success(res.data.msg, {
                           position: "top-center",
                         });
-                        setData([]);
-                        // @ts-ignore
-                        setupdateCount((prev) => prev + 1);
+                        updateBlogs("CREATE", res.data.payload as IBlog);
                       })
                       .catch((err) => {
                         toast.error(err.response.data.msg, {
@@ -119,13 +133,8 @@ const Blogs = ({
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {data?.map((blog) => (
-            <Blog
-              data={blog}
-              key={blog._id}
-              setData={setData}
-              // @ts-ignore
-              setUpdateCount={setupdateCount}
-            />
+            // @ts-ignore
+            <Blog data={blog} key={blog._id} updateBlogs={updateBlogs} />
           ))}
         </div>
       </div>

@@ -37,7 +37,7 @@ const Page = () => {
   return (
     <>
       <Hero />
-      <Blogs data={data?.payload || []} setupdateCount={setupdateCount} />
+      <Blogs data={data?.payload || []} limit={limit} />
       {loading && <SkeletonCard length={8} />}
       <div className="container">
         <Button

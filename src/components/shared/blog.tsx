@@ -43,7 +43,9 @@ const Blog = ({
 }) => {
   const form = useRef<HTMLFormElement>(null);
   const [loading, setLoading] = useState(false);
-  const auth = useSelector((state: { auth: { token: string } }) => state.auth);
+  const auth = useSelector(
+    (state: { auth: { _id: string; token: string } }) => state.auth
+  );
   return (
     <Card className="animate-popup">
       <CardHeader>
@@ -152,11 +154,10 @@ const Blog = ({
           </p>
           <Dialog>
             <DialogTrigger className="w-full">
-              {/* @ts-ignore */}
               <Button
                 variant="destructive"
                 className="w-full mt-2"
-                disabled={data.userId._id !== auth?.user?._id}
+                disabled={data.userId._id !== auth?._id}
               >
                 DELETE
               </Button>

@@ -29,6 +29,7 @@ import {
 import { useEffect, useRef, useState } from "react";
 import axios from "@/api";
 import { toast } from "sonner";
+import { useSelector } from "react-redux";
 const Blog = ({
   data,
   updateBlogs,
@@ -42,8 +43,9 @@ const Blog = ({
 }) => {
   const form = useRef<HTMLFormElement>(null);
   const [loading, setLoading] = useState(false);
+  const auth = useSelector((state: { auth: { token: string } }) => state.auth);
   return (
-    <Card>
+    <Card className="animate-popup">
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
           {data.title}
@@ -150,7 +152,12 @@ const Blog = ({
           </p>
           <Dialog>
             <DialogTrigger className="w-full">
-              <Button variant="destructive" className="w-full mt-2">
+              {/* @ts-ignore */}
+              <Button
+                variant="destructive"
+                className="w-full mt-2"
+                disabled={data.userId._id !== auth?.user?._id}
+              >
                 DELETE
               </Button>
             </DialogTrigger>

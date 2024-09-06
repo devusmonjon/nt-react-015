@@ -62,17 +62,17 @@ const Navbar = () => {
                   <DropdownMenuLabel>Surname: {auth?.lname}</DropdownMenuLabel>
                   <DropdownMenuLabel>Phone: {auth?.phone}</DropdownMenuLabel>
                   <DropdownMenuLabel>
+                    <Button variant={"outline"} className="w-full">
+                      Edit
+                    </Button>
+                  </DropdownMenuLabel>
+                  <DropdownMenuLabel>
                     <Button
                       variant={"default"}
                       className="w-full"
                       onClick={() => dispatch({ type: "LOGOUT" })}
                     >
                       Logout
-                    </Button>
-                  </DropdownMenuLabel>
-                  <DropdownMenuLabel>
-                    <Button variant={"outline"} className="w-full">
-                      Edit
                     </Button>
                   </DropdownMenuLabel>
                 </DropdownMenuContent>

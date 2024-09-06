@@ -53,8 +53,12 @@ const Blog = ({
           {data.title}
 
           <Popover>
-            <PopoverTrigger asChild>
-              <Button variant={"ghost"} className="px-3">
+            <PopoverTrigger asChild disabled={data.userId._id !== auth?._id}>
+              <Button
+                variant={"ghost"}
+                className="px-3"
+                disabled={data.userId._id !== auth?._id}
+              >
                 <Pencil size={16} />
               </Button>
             </PopoverTrigger>
@@ -153,10 +157,13 @@ const Blog = ({
             {new Date(data.createdAt).toDateString()}
           </p>
           <Dialog>
-            <DialogTrigger className="w-full">
+            <DialogTrigger
+              className="w-full"
+              disabled={data.userId._id !== auth?._id}
+            >
               <Button
                 variant="destructive"
-                className="w-full mt-2"
+                className="w-full mt-2 disabled:pointer-events-none"
                 disabled={data.userId._id !== auth?._id}
               >
                 DELETE

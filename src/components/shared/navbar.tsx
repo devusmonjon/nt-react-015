@@ -95,7 +95,7 @@ const Navbar = () => {
         </Link>
         <div className="flex items-center gap-3">
           <div>
-            <div className={`${auth?.token ? "" : "hidden"}`}>
+            <div className={`${auth !== null ? "" : "hidden"}`}>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline">Profile</Button>
@@ -198,7 +198,7 @@ const Navbar = () => {
             </div>
             <Button
               onClick={() => router.push("/login")}
-              className={`${auth?.token ? "hidden" : ""}`}
+              className={`${auth !== null ? "hidden" : ""}`}
             >
               Login
             </Button>

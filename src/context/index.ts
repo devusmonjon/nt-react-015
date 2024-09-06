@@ -1,8 +1,8 @@
 import { combineReducers, legacy_createStore } from "redux";
-import { token } from "./token";
+import { auth } from "./auth";
 
 const reducers = combineReducers({
-  token,
+  auth,
 });
 
 export const store = legacy_createStore(reducers);

@@ -25,11 +25,6 @@ const Blogs = ({
   const form = useRef(null);
   useEffect(() => {
     setData(blogs);
-    setTimeout(() => {
-      window.scrollTo({
-        top: document.body.scrollHeight,
-      });
-    }, 100);
   }, [blogs]);
   return (
     <section className="pt-10 pb-4">

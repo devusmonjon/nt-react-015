@@ -6,7 +6,7 @@ const baseURL = axios.create({
 baseURL.interceptors.request.use(
   (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
     try {
-      let token = localStorage.getItem("token");
+      let token = JSON.parse(localStorage.getItem("user") || "{}").token;
       config.headers.Authorization = `Bearer ${token}`;
     } catch (err) {
       console.log(err);

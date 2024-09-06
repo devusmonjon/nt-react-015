@@ -8,7 +8,7 @@ export const getFromStorage = (getter: "wishlist" | "cart" | "token") => {
   return res;
 };
 export const saveToStorage = (
-  setter: "wishlist" | "cart" | "token",
+  setter: "wishlist" | "cart" | "user",
   data: string
 ) => {
   try {

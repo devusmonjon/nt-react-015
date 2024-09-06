@@ -79,7 +79,7 @@ const Blog = ({
                       .patch(`/blogs/${data._id}`, values)
                       .then((res) => {
                         console.log(res.data);
-                        toast.success(res.data.msg, {
+                        toast.success("Successfully updated", {
                           position: "top-center",
                         });
                         setData([]);
@@ -87,12 +87,9 @@ const Blog = ({
                         setUpdateCount((prev) => prev + 1);
                       })
                       .catch((err) => {
-                        toast.error(
-                          err.response.msg ?? "Something went wrong",
-                          {
-                            position: "top-center",
-                          }
-                        );
+                        toast.error("You have not access to delete this post", {
+                          position: "top-center",
+                        });
                       })
                       .finally(() => setLoading(false));
                   }}

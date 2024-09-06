@@ -39,7 +39,10 @@ const Page = () => {
     axios
       .post("admins/sign-in", values)
       .then((res) => {
-        dispatch({ type: "LOGIN", payload: res.data.payload.token });
+        dispatch({
+          type: "LOGIN",
+          payload: { ...res.data.payload.admin, token: res.data.payload.token },
+        });
         toast.success(res.data.msg, {
           position: "top-center",
         });

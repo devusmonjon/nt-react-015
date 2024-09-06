@@ -18,16 +18,16 @@ const Page = () => {
 
   const { data, loading }: { data: { payload?: IBlog[] }; loading: boolean } =
     useFetch("/blogs", { limit }, [updateCount, limit]);
-  const token = useSelector((state: { token: string }) => state.token);
+  const auth = useSelector((state: { auth: { token: string } }) => state.auth);
   useEffect(() => {
-    if (!token) {
+    if (!auth?.token) {
       router.push("/login");
       toast.error("No access", {
         position: "top-center",
       });
     }
-    console.log(token);
-  }, [token]);
+    console.log(auth);
+  }, [auth]);
   useEffect(() => {
     window.scrollTo({
       top: document.body.scrollHeight,
